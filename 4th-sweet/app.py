@@ -28,7 +28,9 @@ def save_order():
         'address': address_receive,
         'phone': phone_receive
     }
-    db.myorders.insert_one(doc)
+
+    db.orders.insert_one(doc)
+
     return jsonify({'result': 'success', 'msg': '주문이 완료되었습니다!'})
 
 
@@ -36,6 +38,7 @@ def save_order():
 @app.route('/order', methods=['GET'])
 def view_orders():
     # 여길 채워나가세요!
+    orders = list(db.orders.find({}, {'_id': 0}))
     return jsonify({'result': 'success', 'orders': orders})
 
 

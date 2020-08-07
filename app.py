@@ -28,7 +28,9 @@ def save_order():
         'address': address_receive,
         'phone': phone_receive
     }
+
     db.myorders.insert_one(doc)
+
     return jsonify({'result': 'success', 'msg': '주문이 완료되었습니다!'})
 
 

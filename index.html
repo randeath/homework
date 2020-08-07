@@ -77,7 +77,6 @@
             if (address == "" || phone == "" || name == "" || count == "") {
                 alert('입력하지 않은 부분이 없는지 확인해 주세요! 정보가 부족합니다.');
             } else {
-                console.log(response.result);
                 $.ajax({
                     type: "POST",
                     url: "/order",
