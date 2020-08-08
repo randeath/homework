@@ -3,9 +3,11 @@ from flask import Flask, render_template, jsonify, request
 app = Flask(__name__)
 
 from pymongo import MongoClient
+import datetime
 
 client = MongoClient('localhost', 27017)
 db = client.dbhomework
+now = datetime.datetime.now()
 
 
 ## HTML 화면 보여주기
@@ -27,6 +29,7 @@ def save_order():
         'count': count_receive,
         'address': address_receive,
         'phone': phone_receive
+        'datetime': datetime
     }
 
     db.orders.insert_one(doc)
