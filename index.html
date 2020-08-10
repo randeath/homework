@@ -1,171 +1,192 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <!-- Required meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!DOCTYPE html>
+<html lang="ko">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <head>
+        <!-- Webpage Title -->
+        <title>ReservationService</title>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-    <title>ASUS RTX 2080TI</title>
-    <style>
-        .image {
-            width: 500px;
-            margin: 5px auto;
-            text-align: center;
-        }
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
 
-        .headline {
-            width: 350px;
-            margin: 10px auto;
-            background-color: black;
-            color: yellow;
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-        }
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
 
-        .Boxplot {
-            width: 100px;
-            height: 45px;
-            border-radius: 10px;
-            margin: 5px auto;
-        }
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
 
-        .input-box {
-            width: 10px;
-            height: 45px;
-            background-color: dimgray;
-            color: white;
-            padding: 3px;
-            margin: 5px auto;
-            text-align: center;
-            border-radius: 10px;
-        }
+        <!-- 구글폰트 -->
+        <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 
-    </style>
-    <script>
-        $.ajax({
-            type: "GET", // GET 방식으로 요청한다.
-            url: "https://api.manana.kr/exchange/rate.json",
-            data: {}, // 요청하면서 함께 줄 데이터 (GET 요청시엔 비워두세요)
-            success: function (response) {
-                let doller = response[1][`rate`];
-                let html = "달러/원화 환율 : " + doller;
-                $(`#dollar`).append(html);
-            }
-        });
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                $("#reviews-box").html("");
+                showReview();
+            });
+
+            function makeReview() {
+                // 1. 제목, 저자, 리뷰 내용을 가져옵니다.
+                let title = $('#title').val();
+                if (title == '') {
+                    alert('제목을 입력하세요');
+                    return;
+                }
 
 
-        function order() {
-            let address = $("#O_address").val();
-            let phone = $("#O_phone").val();
-            let name = $("#O_name").val();
-            let count = $("#O_number").val();
-            if (address == "" || phone == "" || name == "" || count == "") {
-                alert('입력하지 않은 부분이 없는지 확인해 주세요! 정보가 부족합니다.');
-            } else {
+                let author = $('#author').val();
+                if (author == '') {
+                    alert('저자를 입력하세요');
+                    return;
+                }
+                let review = $('#bookReview').val();
+                if (review == '') {
+                    alert('리뷰를 입력하세요');
+                    return;
+                }
+                console.log(title);
+                console.log(author);
+                console.log(review);
+
+                // 2. 제목, 저자, 리뷰 중 하나라도 입력하지 않았을 경우 alert를 띄웁니다.
+                // 3. POST /review 에 저장을 요청합니다.
                 $.ajax({
                     type: "POST",
-                    url: "/order",
-                    data: {'name_give': name, 'count_give': count, 'address_give': address, 'phone_give': phone},
+                    url: "/review",
+                    data: {
+                        "title": title,
+                        "author": author,
+                        "review": review
+                    },
                     success: function (response) {
-                        if (response.result != 'success') {
+                        if (response["result"] == "success") {
                             alert(response["msg"]);
                             window.location.reload();
                         }
                     }
                 })
             }
-        }
 
-    </script>
-</head>
-<body>
-<h1 class="headline">ASUS RTX 2080TI</h1>
-<a href="https://www.asus.com/kr/Graphics-Cards/ROG-STRIX-RTX2080TI-O11G-GAMING/" target="blank" class="image"><p
-        class="ImageUrl"><img
-        src="https://www.asus.com/media/global/products/tT8CG8BsMigJQ3Lc/P_setting_fff_1_90_end_500.png"
-        alt="Asus RTX 2080TI 이미지 파일" width="500" height="450"/></p></a>
-<p>제조사 : Asus / 12nm / 1350MHz, 부스트 1665MHz / 4352개 / PCIe3.0×16/ GDDR6(DDR6) / 14000MHz / 11GB / 352-bit / HDMI / DP /
-    USB Type-C / 최대 모니터 4개 / 3개 팬 / 299.7mm / 백플레이트 / LED 라이트 / AURA SYNC</p>
-<button type="button"
-        onclick="location.href='http://prod.danawa.com/info/?pcode=6496050&keyword=rtx%202080%20ti&cate=112753' "
-        target="_blank" class="btn btn-primary">
-    최저가 검색(다나와)
-</button>
-<!--<button type="button" onclick="showExchangerate()" class="btn btn-primary">환율보기</button>-->
-<p id="dollar"></p>
-<div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <label class="input-group-text Boxplot">주문자 성함</label>
-    </div>
-    <input type="text" class="form-control input-box" id="O_name" aria-label="Default"
-           aria-describedby="inputGroup-sizing-default">
-</div>
+            function showReview() {
+                // 1. 리뷰 목록을 서버에 요청하기
+                // 2. 요청 성공 여부 확인하기
+                // 3. 요청 성공했을 때 리뷰를 올바르게 화면에 나타내기
+                $.ajax({
+                    type: "GET",
+                    url: "/order",
+                    data: {},
+                    success: function (response) {
+                        if (response.result != 'success') {
+                            alert('리뷰를 가져오는데 실패');
+                            return;
+                        }
+                        let reviews = response['reviews'];
 
-<div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <label class="input-group-text Boxplot">개수</label>
-    </div>
-    <select class="custom-select input-box" id="O_number">
-        <option selected>개수를 선택하세요</option>
-        <option value="1">1개</option>
-        <option value="2">2개</option>
-        <option value="3">3개</option>
-    </select>
-</div>
-<div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <label class="input-group-text Boxplot">주소</label>
-    </div>
-    <input type="text" class="form-control input-box" id="O_address" aria-label="Default"
-           aria-describedby="inputGroup-sizing-default">
-</div>
-<div class="input-group mb-3">
-    <div class="input-group-prepend">
-        <label class="input-group-text Boxplot">전화번호</label>
-    </div>
-    <input type="text" class="form-control input-box" id="O_phone" aria-label="Default"
-           aria-describedby="inputGroup-sizing-default">
-</div>
-<div class="order">
-    <button onclick="order()" type="button" class="btn btn-primary">주문하기</button>
-</div>
-<div class="orders">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">이름</th>
-            <th scope="col">수량</th>
-            <th scope="col">주소</th>
-            <th scope="col">전화번호</th>
-        </tr>
-        </thead>
-        <tbody id="orders-box">
-        <tr>
-            <td>박르탄</td>
-            <td>10000</td>
-            <td>르탄시 코딩구 열심동</td>
-            <td>010-1234-5678</td>
-        </tr>
+                        for(let i = 0; i < reviews.length; i++) {
+                            let title = reviews[i]['title'];
+                            let author = reviews[i]['author'];
+                            let review = reviews[i][`review`];
+                        let tempHtml =
+                        `<tr>
+                        <td>${title}</td>
+                        <td>${author}</td>
+                        <td>${review}</td>
+                    </tr>`
+                            $('#reviews-box').append(tempHtml);
+                        }
+                    }
+                })
+            }
 
-        </tbody>
-    </table>
-</div>
+            function validateLength(obj) {
+                let content = $(obj).val();
+                if (content.length > 140) {
+                    alert("리뷰는 140자까지 기록할 수 있습니다.");
+                    $(obj).val(content.substring(0, content.length - 1));
+                }
+            }
+        </script>
 
+        <style type="text/css">
+            * {
+                font-family: "Do Hyeon", sans-serif;
+            }
 
-</body>
+            h1,
+            h5 {
+                display: inline;
+            }
+
+            .info {
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
+            .review {
+                text-align: center;
+            }
+
+            .reviews {
+                margin-top: 100px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <img src="https://previews.123rf.com/images/maxxyustas/maxxyustas1511/maxxyustas151100002/47858355-education-concept-books-and-textbooks-on-the-bookshelf-3d.jpg"
+                 class="img-fluid" alt="Responsive image">
+            <div class="info">
+                <h1>읽은 책에 대해 말씀해주세요.</h1>
+                <p>다른 사람을 위해 리뷰를 남겨주세요! 다 같이 좋은 책을 읽는다면 다 함께 행복해질 수 있지 않을까요?</p>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">제목</span>
+                    </div>
+                    <input type="text" class="form-control" id="title">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">저자</span>
+                    </div>
+                    <input type="text" class="form-control" id="author">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">리뷰</span>
+                    </div>
+                    <textarea class="form-control" id="bookReview"
+                              cols="30"
+                              rows="5" placeholder="140자까지 입력할 수 있습니다." onkeyup="validateLength(this)"></textarea>
+                </div>
+                <div class="review">
+                    <button onclick="makeReview()" type="button" class="btn btn-primary">리뷰 작성하기</button>
+                </div>
+            </div>
+            <div class="reviews">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">제목</th>
+                        <th scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                    </thead>
+                    <tbody id="reviews-box">
+                    <tr>
+                        <td>왕초보 8주 코딩</td>
+                        <td>김르탄</td>
+                        <td>역시 왕초보 코딩교육의 명가답군요. 따라하다보니 눈 깜짝할 사이에 8주가 지났습니다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+
 </html>
