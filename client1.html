@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -19,51 +20,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-    <title>ASUS RTX 2080TI를 주문해 보자</title>
-    <style>
-        .wrap {
-            width: 500px;
-            margin: 10px auto 10px auto;
-            text-align: center;
-            padding: 10px;
+    <title>ReservationService</title>
 
-        }
+    <link rel="stylesheet" type="text/css" href="client1.css">
 
-        .image {
-            width: 500px;
-            height: 450px;
-            margin: 10px auto;
-        }
-
-        .headline {
-            width: 300px;
-            margin: 10px auto;
-            background-color: black;
-            color: yellow;
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .Boxplot {
-            width: 100px;
-            height: 40px;
-            text-align: center;
-
-
-        }
-
-        .input-box {
-            height: 40px;
-            text-align: center;
-        }
-
-        .order-box {
-            margin-bottom: 10px;
-        }
-
-
-    </style>
     <script>
         $(document).ready(function () {
             $.ajax({
@@ -134,7 +94,7 @@
 </head>
 <body>
 <h1 class="headline">ASUS RTX 2080TI</h1>
-<div class="image">
+<div id="image">
     <a href="https://www.asus.com/kr/Graphics-Cards/ROG-STRIX-RTX2080TI-O11G-GAMING/" target="blank"><p
             class="ImageUrl"><img
             src="https://www.asus.com/media/global/products/tT8CG8BsMigJQ3Lc/P_setting_fff_1_90_end_500.png"
